@@ -1,7 +1,7 @@
 {
-  "name": "google-container-slack",
+  "name": "google-container-email",
   "version": "0.0.1",
-  "description": "Slack integration for Google Cloud Container Builder, using Google Cloud Functions",
+  "description": "Email integration for Google Cloud Container Builder, using Google Cloud Functions",
   "main": "index.js",
   "scripts": {
     "test": "node_modules/.bin/mocha --reporter spec",
@@ -10,11 +10,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Philmod/google-container-slack.git"
+    "url": "git+https://github.com/Philmod/google-container-email.git"
   },
   "dependencies": {
-    "@slack/client": "3.9.0",
-    "humanize-duration": "3.10.0"
+    "humanize-duration": "3.10.0",
+    "mailgun-js": "~0.11.2"
   },
   "devDependencies": {
     "async": "^2.1.5",

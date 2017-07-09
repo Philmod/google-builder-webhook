@@ -1,11 +1,14 @@
-# google-container-slack
+# google-container-email
 
-Slack integration for Google Cloud Container Builder, using Google Cloud Functions to post messages to Slack when a build reaches a specific state.
+Email integration for Google Cloud Container Builder, using Google Cloud Functions to send an email when a build reaches a specific state.
 
 ## Setup
-- Create a Slack app, and copy the webhook URL:
+- Create a Mailgun account and a domain:
 ```
-export SLACK_WEBHOOK_URL=my-slack-webhook-url
+export MAILGUN_API_KEY=my-api-key
+export MAILGUN_DOMAIN=mydomain.com
+export MAILGUN_FROM=philmod@mydomain.com
+export MAILGUN_TO=myteam@mydomain.com
 ```
 - Set the `PROJECT_ID` variable:
 ```
@@ -14,7 +17,7 @@ export PROJECT_ID=my-project-id
 - [Optionally] Set a specific `BUCKET_NAME` and a `FUNCTION_NAME`.
 - [Optionally] Set the status you want a message for, here are the default ones:
 ```
-export GC_SLACK_STATUS="SUCCESS FAILURE TIMEOUT INTERNAL_ERROR"
+export GC_STATUS="SUCCESS FAILURE TIMEOUT INTERNAL_ERROR"
 ```
 - Create the function:
 ```
@@ -47,10 +50,6 @@ exports BUCKET_NAME=my-bucket
 ```
 ### How can I update a function?
 If you use the setup script with the same `FUNCTION_NAME`, it will update the existing function.
-
-### Where can I find the `SLACK_WEBHOOK_URL`?
-After creating an application on Slack, active the Incoming Webhooks. You'll find the url on that page:
-![slack webhook](https://cldup.com/aQVqcFCuAH.png)
 
 ### Why do I have to source the script?
 In the case where a `BUCKET_NAME` is not defined, a random one is generated. And in order to delete it during the teardown, the variable has to be exported from the setup script.

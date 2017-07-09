@@ -3,11 +3,16 @@
 [ -z "$PROJECT_ID" ] && echo "Need to set PROJECT_ID" && exit 1;
 gcloud config set project $PROJECT_ID
 
-# Create config file with SLACK_WEBHOOK_URL and GC_SLACK_STATUS.
-if [ -z "$GC_SLACK_STATUS" ]; then
-  export GC_SLACK_STATUS="SUCCESS FAILURE TIMEOUT INTERNAL_ERROR"
+[ -z "$MAILGUN_API_KEY" ] && echo "Need to set MAILGUN_API_KEY" && exit 1;
+[ -z "$MAILGUN_DOMAIN" ] && echo "Need to set MAILGUN_DOMAIN" && exit 1;
+[ -z "$MAILGUN_FROM" ] && echo "Need to set MAILGUN_FROM" && exit 1;
+[ -z "$MAILGUN_TO" ] && echo "Need to set MAILGUN_TO" && exit 1;
+
+# Create config file with constants.
+if [ -z "$GC_STATUS" ]; then
+  export GC_STATUS="SUCCESS FAILURE TIMEOUT INTERNAL_ERROR"
 fi
-arr=(`echo ${GC_SLACK_STATUS}`);
+arr=(`echo ${GC_STATUS}`);
 json_array() {
   echo -n '['
   while [ $# -gt 0 ]; do
@@ -20,8 +25,11 @@ json_array() {
 }
 cat <<EOF > config.json
 {
-  "SLACK_WEBHOOK_URL" : "$SLACK_WEBHOOK_URL",
-  "GC_SLACK_STATUS": $(json_array "${arr[@]}")
+  "MAILGUN_API_KEY" : "$MAILGUN_API_KEY",
+  "MAILGUN_DOMAIN" : "$MAILGUN_DOMAIN",
+  "MAILGUN_FROM" : "$MAILGUN_FROM",
+  "MAILGUN_TO" : "$MAILGUN_TO",
+  "GC_STATUS": $(json_array "${arr[@]}")
 }
 EOF
 
@@ -39,7 +47,7 @@ gsutil mb -p $PROJECT_ID gs://$BUCKET_NAME
 
 # Deploy function.
 if [ -z "$FUNCTION_NAME" ]; then
-  export FUNCTION_NAME="containerSlackIntegration"
+  export FUNCTION_NAME="containerEmailIntegration"
 fi
 if [ -z "$REGION" ]; then
   export REGION="us-central1"

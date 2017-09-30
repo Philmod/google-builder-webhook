@@ -11,11 +11,11 @@ if [ -z "$GC_STATUS" ]; then
 fi
 arr=(`echo ${GC_STATUS}`);
 json_array() {
-  echo -n '['
+  echo '['
   while [ $# -gt 0 ]; do
     x=${1//\\/\\\\}
-    echo -n \"${x//\"/\\\"}\"
-    [ $# -gt 1 ] && echo -n ', '
+    echo \"${x//\"/\\\"}\"
+    [ $# -gt 1 ] && echo ', '
     shift
   done
   echo ']'

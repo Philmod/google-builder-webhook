@@ -1,12 +1,3 @@
 {
-  "WEBHOOK" : "https://requestb.in/1myqgic1",
-  "GC_STATUS": -n [
--n "SUCCESS"
--n , 
--n "FAILURE"
--n , 
--n "TIMEOUT"
--n , 
--n "INTERNAL_ERROR"
-]
+  "WEBHOOK" : "XXX"
 }

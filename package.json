@@ -1,7 +1,7 @@
 {
-  "name": "google-container-email",
+  "name": "google-container-webhook",
   "version": "0.0.1",
-  "description": "Email integration for Google Cloud Container Builder, using Google Cloud Functions",
+  "description": "Webhook integration for Google Cloud Container Builder, using Google Cloud Functions",
   "main": "index.js",
   "scripts": {
     "test": "node_modules/.bin/mocha --reporter spec",
@@ -10,11 +10,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Philmod/google-container-email.git"
+    "url": "git+https://github.com/Philmod/google-container-webhook.git"
   },
   "dependencies": {
-    "humanize-duration": "3.10.0",
-    "mailgun-js": "~0.11.2"
+    "request": "^2.83.0"
   },
   "devDependencies": {
     "async": "^2.1.5",

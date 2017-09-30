@@ -1,14 +1,11 @@
-# google-container-email
+# google-container-webhook
 
-Email integration for Google Cloud Container Builder, using Google Cloud Functions to send an email when a build reaches a specific state.
+Webhook integration for Google Cloud Container Builder, using Google Cloud Functions to send an http request to a webhook when a build reaches a specific state.
 
 ## Setup
-- Create a Mailgun account and a domain:
+- Set the webhook address:
 ```
-export MAILGUN_API_KEY=my-api-key
-export MAILGUN_DOMAIN=mydomain.com
-export MAILGUN_FROM=philmod@mydomain.com
-export MAILGUN_TO=myteam@mydomain.com
+export WEBHOOK=https://requestb.in/1myqgic1
 ```
 - Set the `PROJECT_ID` variable:
 ```

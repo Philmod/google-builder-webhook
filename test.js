@@ -23,85 +23,31 @@ describe('eventToBuild', () => {
 
 function cleanConfig(callback) {
   let config = {
-    MAILGUN_API_KEY: "xxx",
-    MAILGUN_DOMAIN: "email.com",
-    MAILGUN_FROM: "me@email.com",
-    MAILGUN_TO: "someone@email.com",
+    WEBHOOK: "xxx",
   }
   fs.writeFile('config.json', JSON.stringify(config), 'utf8', callback);
 }
-
-describe('createEmail', () => {
-  beforeEach(cleanConfig);
-  afterEach(cleanConfig);
-
-  it('should create an email message', () => {
-    let build = {
-      id: 'build-id',
-      logUrl: 'https://logurl.com',
-      status: 'SUCCESS',
-      finishTime: '2017-03-19T00:08:12.220502Z',
-    };
-    let message = lib.createEmail(build);
-
-    message.from.should.equal("me@email.com");
-    message.to.should.equal("someone@email.com");
-    message.subject.should.equal("Build build-id finished");
-    should.ok(contains(message.text, "Build build-id finished with status SUCCESS"));
-    should.ok(contains(message.text, "https://logurl.com"));
-  });
-
-  it('should include the build duration', () => {
-    let now = Date.now();
-    let deltaInMinutes = 11;
-    let build = {
-      id: 'build-id',
-      logUrl: 'https://logurl.com',
-      status: 'SUCCESS',
-      startTime: new Date(now - deltaInMinutes*MS_PER_MINUTE),
-      finishTime: now,
-    };
-    let message = lib.createEmail(build);
-    should.ok(contains(message.text, deltaInMinutes + ' minutes'));
-  });
-
-  it('should create an email message with images', () => {
-    let build = {
-      id: 'build-id',
-      logUrl: 'https://logurl.com',
-      status: 'SUCCESS',
-      finishTime: Date.now(),
-      images: ['image-1', 'image-2'],
-    };
-    let message = lib.createEmail(build);
-    should.ok(contains(message.text, "Images: image-1,image-2"));
-  });
-});
 
 describe('subscribe', () => {
   beforeEach(cleanConfig);
   afterEach(cleanConfig);
 
   beforeEach(() => {
-    this.mailgunCalled = false;
-    lib.mailgun.messages = () => {
-      return {
-        send: (message, callback) => {
-          this.mailgunCalled = true;
-          callback()
-        },
-      }
+    this.requestCalled = false;
+    lib.request.post = (message, callback) => {
+      this.requestCalled = true;
+      return callback();
     }
   });
 
-  it('should subscribe to pubsub message and send an email', (done) => {
+  it('should subscribe to pubsub message and send an http request to webhook', (done) => {
     let event = {
       data: {
         data: base64Build
       }
     };
     lib.subscribe(event, () => {
-      this.mailgunCalled.should.be.true();
+      this.requestCalled.should.be.true();
       done();
     });
   });
@@ -134,7 +80,7 @@ describe('subscribe', () => {
       },
     ];
     async.forEach(testCases, (tc, doneEach) => {
-      this.mailgunCalled = false;
+      this.requestCalled = false;
       let event = {
         data: {
           data: new Buffer(JSON.stringify({
@@ -143,7 +89,7 @@ describe('subscribe', () => {
         }
       };
       lib.subscribe(event, () => {
-        this.mailgunCalled.should.equal(tc.want);
+        this.requestCalled.should.equal(tc.want);
         doneEach();
       });
     }, done);
@@ -178,7 +124,7 @@ describe('subscribe', () => {
       },
     ];
     async.forEach(testCases, (tc, doneEach) => {
-      this.mailgunCalled = false;
+      this.requestCalled = false;
       let event = {
         data: {
           data: new Buffer(JSON.stringify({
@@ -187,7 +133,7 @@ describe('subscribe', () => {
         }
       };
       lib.subscribe(event, () => {
-        this.mailgunCalled.should.equal(tc.want, tc.status);
+        this.requestCalled.should.equal(tc.want, tc.status);
         doneEach();
       });
     }, function() {

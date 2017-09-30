@@ -3,10 +3,7 @@
 [ -z "$PROJECT_ID" ] && echo "Need to set PROJECT_ID" && exit 1;
 gcloud config set project $PROJECT_ID
 
-[ -z "$MAILGUN_API_KEY" ] && echo "Need to set MAILGUN_API_KEY" && exit 1;
-[ -z "$MAILGUN_DOMAIN" ] && echo "Need to set MAILGUN_DOMAIN" && exit 1;
-[ -z "$MAILGUN_FROM" ] && echo "Need to set MAILGUN_FROM" && exit 1;
-[ -z "$MAILGUN_TO" ] && echo "Need to set MAILGUN_TO" && exit 1;
+[ -z "$WEBHOOK" ] && echo "Need to set WEBHOOK" && exit 1;
 
 # Create config file with constants.
 if [ -z "$GC_STATUS" ]; then
@@ -25,10 +22,7 @@ json_array() {
 }
 cat <<EOF > config.json
 {
-  "MAILGUN_API_KEY" : "$MAILGUN_API_KEY",
-  "MAILGUN_DOMAIN" : "$MAILGUN_DOMAIN",
-  "MAILGUN_FROM" : "$MAILGUN_FROM",
-  "MAILGUN_TO" : "$MAILGUN_TO",
+  "WEBHOOK" : "$WEBHOOK",
   "GC_STATUS": $(json_array "${arr[@]}")
 }
 EOF

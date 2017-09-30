@@ -16,7 +16,7 @@ module.exports.subscribe = (event, callback) => {
   // Send http request to webhook.
   module.exports.request.post({
     url: config.WEBHOOK,
-    formData: build,
+    form: build,
   }, callback);
 };
 

@@ -41,7 +41,7 @@ gsutil mb -p $PROJECT_ID gs://$BUCKET_NAME
 
 # Deploy function.
 if [ -z "$FUNCTION_NAME" ]; then
-  export FUNCTION_NAME="containerEmailIntegration"
+  export FUNCTION_NAME="GoogleCloudBuilderWebhookIntegration"
 fi
 if [ -z "$REGION" ]; then
   export REGION="us-central1"

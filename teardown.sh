@@ -2,7 +2,7 @@
 
 # Clean config file.
 cat <<EOF > config.json
-{"MAILGUN_API_KEY":"xxx","MAILGUN_DOMAIN": "email.com","MAILGUN_FROM": "me@email.com","MAILGUN_TO": "someone@email.com"}
+{"WEBHOOK":"xxx"}
 EOF
 
 [ -z "$PROJECT_ID" ] && echo "Need to set PROJECT_ID" && exit 1;
